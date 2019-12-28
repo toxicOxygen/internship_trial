@@ -29,10 +29,13 @@ class _HomePageState extends State<HomePage> {
     final data = await FirebaseDynamicLinks.instance.getInitialLink();
     final deepLink = data?.link;
 
+    //checking if there is a deepLink, if there is one, open the page it points
+    // to
     if(deepLink != null){
       Navigator.of(context).pushNamed(deepLink.path);
     }
 
+    //an event that is triggered anytime a dynamic link is used in the app
     FirebaseDynamicLinks.instance.onLink(
       onSuccess: (dynamicLink)async{
         final deepLink = dynamicLink?.link;
@@ -103,12 +106,16 @@ class _HomePageState extends State<HomePage> {
     setState(() => _isCreatingLink = true);
 
     final parameters = DynamicLinkParameters(
+      //u can replace with your own domain
       uriPrefix: 'https://kinstugidevs.page.link',
+      //this tells app which page to open
       link: Uri.parse('https://kinstugidevs.com/invitation-page'),
+      //u can replace it with your own packageName found in android Manifest
       androidParameters: AndroidParameters(
         packageName: 'www.kinstugidevs.com.internship_interview',
         minimumVersion: 16
       ),
+      //u can replace with your app's ios bundle id
       iosParameters: IosParameters(
         bundleId: 'www.kinstugidevs.com.internship_interview'
       )
